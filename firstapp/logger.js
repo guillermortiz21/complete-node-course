@@ -1,4 +1,17 @@
-// This a module for login messages
+// The module wrapper function is a function that wraps all the modules like this:
+/*(function(exports, require, module, __filename, __dirname){
+  // Your module code goes here
+  // This wrapper function is why the objects module, exports, require, __filename and __dirname are available inside the modules. 
+})*/
+
+
+// Its because of the wrapper function that all these objects are available!
+console.log(exports);
+console.log(require);
+console.log(module);
+console.log(__filename);
+console.log(__dirname);
+
 
 var url = "http:mylogger.io/log";
 
@@ -7,19 +20,4 @@ function log(message){
   console.log(message);
 }
 
-// url and log are scoped only to logger.js
-// to make it available to other modules
-
-// The module object is a json with properties.
-// One of those properties is exports, you can modify it
-
-// With the module.exports you change the public interface of this module
-
-// This will export objects
-
-module.exports.log = log;
-module.exports.endPoint = url;
-
-// But you can also export a single function or class like this
-// Here the exports stops being a json object and starts being a function.
-//module.exports = log;
+module.exports = log;

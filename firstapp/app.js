@@ -1,4 +1,2 @@
-const {log, endPoint} = require('./logger');
-const logger = require('./logger');
+const log = module.require('./logger');
 log("message");
-logger.log("This is a message");
