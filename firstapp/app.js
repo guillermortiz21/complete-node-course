@@ -1,4 +1,4 @@
-/*
-This will show you information about this file like id, path, exports, parent or children.                               
-*/
-console.log(module);
+const {log, endPoint} = require('./logger');
+const logger = require('./logger');
+log("message");
+logger.log("This is a message");

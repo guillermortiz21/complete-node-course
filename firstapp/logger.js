@@ -15,5 +15,11 @@ function log(message){
 
 // With the module.exports you change the public interface of this module
 
+// This will export objects
+
 module.exports.log = log;
 module.exports.endPoint = url;
+
+// But you can also export a single function or class like this
+// Here the exports stops being a json object and starts being a function.
+//module.exports = log;
