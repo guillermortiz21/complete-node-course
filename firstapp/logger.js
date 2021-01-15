@@ -1,23 +1,17 @@
-// The module wrapper function is a function that wraps all the modules like this:
-/*(function(exports, require, module, __filename, __dirname){
-  // Your module code goes here
-  // This wrapper function is why the objects module, exports, require, __filename and __dirname are available inside the modules. 
-})*/
+const EventEmitter = require('events');
 
+class Logger extends EventEmitter{
+  constructor(){
+    super();
+    this.url = "http:mylogger.io/log";
+  }
 
-// Its because of the wrapper function that all these objects are available!
-console.log(exports);
-console.log(require);
-console.log(module);
-console.log(__filename);
-console.log(__dirname);
-
-
-var url = "http:mylogger.io/log";
-
-function log(message){
-  // Send an HTTP request
-  console.log(message);
+  log(message){
+    // Send an HTTP request
+    console.log(message);
+    // Emit comes from EventEmitter
+    this.emit("messageLogged", {id: 1, url:"http://"});
+  }
 }
 
-module.exports = log;
+module.exports = Logger;
