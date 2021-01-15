@@ -1,13 +1,15 @@
 const http = require('http');
 
-const server = http.createServer();
-// The server inherits from net.Server
-// net.Server is an EventEmitter
-// therefore server is an EventEmitter
-// You can find the on and emit methods inside server.
+const server = http.createServer((req, res) => {
+  if(req.url === "/"){
+    res.write("Hello world!");
+    res.end();
+  }
 
-server.on("connection", (socket) => {
-  console.log(`New connection`);
+  if(req.url === "/api/courses"){
+    res.write(JSON.stringify([1,2,3]));
+    res.end();
+  }
 });
 
 // Lets listen to the port 3000
