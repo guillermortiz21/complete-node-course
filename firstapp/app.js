@@ -1,5 +1,6 @@
-function sayHello(name){
-  console.log(`Hello ${name}`);
-}
+global.console.log("Hello");
+console.log("world");
 
-sayHello("Guillermo");
+var myVar = "I am not in the global object";
+global.console.log(myVar);
+global.console.log(global.myVar); // Prints undefined
