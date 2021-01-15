@@ -1,10 +1,15 @@
-const Logger = require('./Logger');
-const logger = new Logger();
+const http = require('http');
 
-// We need to register a listener that listens to messageLogged events
-logger.on("messageLogged", (arg) => {
-  // This function will be called when the event is raised
-  console.log(`Listener called ${JSON.stringify(arg)}`);
+const server = http.createServer();
+// The server inherits from net.Server
+// net.Server is an EventEmitter
+// therefore server is an EventEmitter
+// You can find the on and emit methods inside server.
+
+server.on("connection", (socket) => {
+  console.log(`New connection`);
 });
 
-logger.log("This is a message");
+// Lets listen to the port 3000
+server.listen(3000);
+console.log("Listening on port 3000...");
