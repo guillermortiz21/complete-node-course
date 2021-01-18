@@ -68,6 +68,19 @@ async function getCourses(){
     .sort({name: 1}) // 1 is ascending, -1 is descending
     .select({name: 1, tags: 1}) // select just a few properties
   console.log(find);
+
+  // Comparison operators!
+  // eq -> equal
+  // ne -> not equal 
+  // gt -> greater than
+  // gte -> greater than or equal to
+  // lt -> less than
+  // lte -> less than or equal
+  // in
+  // nin -> not in
+  const withComparisons = await Course
+    .find({price: {$gte: 10}})
+
 }
 
 getCourses();
