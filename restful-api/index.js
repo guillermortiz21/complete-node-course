@@ -6,12 +6,20 @@ const authentication = require('./authentication');
 const express = require('express');
 const app = express();
 
+//console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+// get'env' uses the NODE_ENV inside process.env
+//console.log(`app: ${app.get('env')}`)
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true})); // for form-urlencoded payloads
 app.use(express.static('public'));
 app.use(helmet());
 app.use(morgan('tiny'));
-app.use(logger);
+// I want logger only if we are on development
+if (app.get('env') === 'development'){
+  app.use(logger);
+  console.log('Morgan enabled...');
+}
 app.use(authentication);
  
 const courses = [
