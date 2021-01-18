@@ -86,20 +86,35 @@ async function getCourses(){
   // Logical operators!
   // or
   // and
-
   //  const logical = await Course
   //    .find()
   //    .or([{author: 'Mosh'},{isPublished:true}])// Get the courses that are by  Mosh or that are published
   //    .and([{author: 'Mosh'},{isPublished:true}])// Get the courses that are by  Mosh a that are published
 
   // Regular expressions!
-  const coursesThatStartWithMosh = await Course
-    .find({autor: /^Mosh/}) // String that starts with Mosh
-  const coursesThatEndsWithMosh = await Course
-    .find({autor: /Mosh$/i}) // String that starts with Mosh. The i is to make it not case sensitive
-  const coursesThatContainsWithMosh = await Course
-    .find({autor: /.*Mosh.*/i}) // String that contains Mosh
+  // const coursesThatStartWithMosh = await Course
+  //   .find({autor: /^Mosh/}) // String that starts with Mosh
+  // const coursesThatEndsWithMosh = await Course
+  //   .find({autor: /Mosh$/i}) // String that starts with Mosh. The i is to make it not case sensitive
+  // const coursesThatContainsWithMosh = await Course
+  //   .find({autor: /.*Mosh.*/i}) // String that contains Mosh, case insensitive
   
+  // Counting!
+  const countingCourses = await Course
+    .find({author: 'Mosh',isPublished: true})
+    .countDocuments()
+  console.log(countingCourses);
+  
+  // Pagination!
+  const pageNumber = 2;
+  const pageSize = 10;
+  // In the endpoint this would be like /api/courses?pageNumber=2&pageSize=10
+  const countingCourses = await Course
+    .find({author: 'Mosh',isPublished: true})
+    .skip((pageNumber - 1) * pageSize) // Skip a certain number of Documents.
+    .limit(pageSize)
+  console.log(countingCourses);
+
 
 }
 
