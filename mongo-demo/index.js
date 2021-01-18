@@ -52,6 +52,24 @@ async function createCourse(){
   console.log(result);
 }
 
-createCourse();
+//createCourse();
+
+// Lets query courses from the db
+async function getCourses(){
+  // You can get all the courses with:
+  const courses = await Course.find();
+  console.log(courses);
+
+  // you can find some objects with
+  // Also you can add nice things!
+  const find = await Course
+    .find({author: 'Mosh',isPublished: true})
+    .limit(10) // get no more than 10
+    .sort({name: 1}) // 1 is ascending, -1 is descending
+    .select({name: 1, tags: 1}) // select just a few properties
+  console.log(find);
+}
+
+getCourses();
 
 
