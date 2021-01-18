@@ -1,3 +1,4 @@
+const config = require('config');
 const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -15,6 +16,13 @@ app.use(express.urlencoded({extended: true})); // for form-urlencoded payloads
 app.use(express.static('public'));
 app.use(helmet());
 app.use(morgan('tiny'));
+
+// Configuration
+console.log(`Aplication name: ${config.get('name')}`);
+console.log(`Mail server: ${config.get('mail.host')}`);
+console.log(`Mail password: ${config.get('mail.password')}`);
+
+
 // I want logger only if we are on development
 if (app.get('env') === 'development'){
   app.use(logger);
