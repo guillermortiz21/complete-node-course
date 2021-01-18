@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true})); // for form-urlencoded payloads
+app.use(express.static('public'));
 app.use(logger);
 app.use(authentication);
  
