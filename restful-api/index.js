@@ -34,18 +34,10 @@ app.get('/api/courses/:id', (req, res) => {
 app.post('/api/courses', (req, res) => {
 
   // Input validation!
-  const schema = Joi.object({
-    name: Joi.string().min(3).required()
-  })
-
-  const result = schema.validate(req.body);
+  const {error} = validateCourse(req.body);
   
-  if(result.error){
-    // Iterate through the error details array
-    // and get all the error messages.
-    const errorMessages = result.error.details.reduce(
-      (acum, detail) => acum + detail.message + '\n', ""
-    );
+  if(error){
+    const errorMessages = getValidationErrorMessages(error);
     // 400 error, bad request
     res.status(400).send(errorMessages);
     return;
@@ -60,6 +52,35 @@ app.post('/api/courses', (req, res) => {
   res.send(course);
 });
 
+// Lets update a course
+app.put('/api/courses/:id', (req, res) => {
+  // Find the course with that id
+  const course = courses.find(
+    course => course.id === parseInt(req.params.id)
+  );
+
+  // If it doesn't exist, return 404
+  if(!course){
+    res.status(404).send(`The course with id ${req.params.id} was not found`);
+    return;
+  } 
+
+  // Validate
+  const {error} = validateCourse(req.body);
+  
+  if(error){
+    const errorMessages = getValidationErrorMessages(error);
+    // If not valid, return 400 - Bad request
+    res.status(400).send(errorMessages);
+    return;
+  }
+
+  // Update course
+  course.name = req.body.name;
+  // Return the updated course
+  res.send(course);
+});
+
 // Two params!
 app.get('/api/posts/:year/:month', (req, res) => {
   res.send({params: req.params, query: req.query});
@@ -67,3 +88,19 @@ app.get('/api/posts/:year/:month', (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+function validateCourse(course){
+  const schema = Joi.object({
+    name: Joi.string().min(3).required()
+  })
+  
+  return schema.validate(course); 
+}
+
+function getValidationErrorMessages(validationErrors){
+  // Iterate through the error details array
+  // and get all the error messages.
+  return validationErrors.details.reduce(
+    (acum, detail) => acum + detail.message + '\n', ""
+  );
+}
