@@ -78,8 +78,20 @@ async function getCourses(){
   // lte -> less than or equal
   // in
   // nin -> not in
-  const withComparisons = await Course
-    .find({price: {$gte: 10}})
+  // const coursesBetween10And20 = await Course
+  //   .find({price: {$gte: 10, $lte: 20}});
+  // const coursesThatAre10_15Or20 = await Course
+  //   .find({price: {$in: [10,15,20]}})
+  
+  // Logical operators!
+  // or
+  // and
+
+  const logical = await Course
+    .find()
+    .or([{author: 'Mosh'},{isPublished:true}])// Get the courses that are by Mosh or that are published
+    .and([{author: 'Mosh'},{isPublished:true}])// Get the courses that are by Mosh and that are published
+
 
 }
 
