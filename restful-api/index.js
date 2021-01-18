@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 
-app.use(express.json());
+const Joi = require('joi');
 
+app.use(express.json());
+ 
 const courses = [
   {id: 1, name: 'Course1'},
   {id: 2, name: 'Course2'},
@@ -30,6 +32,25 @@ app.get('/api/courses/:id', (req, res) => {
 
 // Crea a course
 app.post('/api/courses', (req, res) => {
+
+  // Input validation!
+  const schema = Joi.object({
+    name: Joi.string().min(3).required()
+  })
+
+  const result = schema.validate(req.body);
+  
+  if(result.error){
+    // Iterate through the error details array
+    // and get all the error messages.
+    const errorMessages = result.error.details.reduce(
+      (acum, detail) => acum + detail.message + '\n', ""
+    );
+    // 400 error, bad request
+    res.status(400).send(errorMessages);
+    return;
+  }
+
   const course = {
     id: courses.length + 1,
     name: req.body.name
