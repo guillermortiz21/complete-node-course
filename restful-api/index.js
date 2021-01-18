@@ -1,4 +1,9 @@
 const config = require('config');
+const startupDebugger = require('debug')('app:startup'); // This logs will be shown then env.DEBUG is equal to 'app:startup'
+const dbDebugger = require('debug')('app:db'); // This logs will be shown then env.DEBUG is equal to 'app:db'
+// If env.DEBUG is equal to 'app:startup,app:db' it will show both!
+// If you don't want to see any logs, just reset env.DEBUG= (equal to nothing)
+// if you want to see all the logs env.DEBUG=app:*
 const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -26,8 +31,12 @@ console.log(`Mail password: ${config.get('mail.password')}`);
 // I want logger only if we are on development
 if (app.get('env') === 'development'){
   app.use(logger);
-  console.log('Morgan enabled...');
+  startupDebugger('Morgan enabled...');
 }
+
+// SImulate db work
+dbDebugger('Connected to database');
+
 app.use(authentication);
  
 const courses = [
