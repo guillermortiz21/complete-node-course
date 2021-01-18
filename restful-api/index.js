@@ -16,6 +16,11 @@ const app = express();
 // get'env' uses the NODE_ENV inside process.env
 //console.log(`app: ${app.get('env')}`)
 
+// set view engine for pug, express will internally pug
+app.set('view engine', 'pug');
+// path to your views or templates
+app.set('views', './views')
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true})); // for form-urlencoded payloads
 app.use(express.static('public'));
@@ -48,7 +53,12 @@ const courses = [
 // Lets do a get request
 
 app.get('/', (req, res) => {
-  res.send('Hello world!!!');
+  // use pug to render!
+  // the object has the properties in index.pug
+  res.render('index', {
+    title: 'My express app',
+    message: 'Hello'
+  });
 });
 
 app.get('/api/courses', (req, res) => {
