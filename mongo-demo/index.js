@@ -69,8 +69,9 @@ async function createCourse(){
   // The param is the initializer
   const course = new Course({
     name: 'Angular Course',
-    category: 'web',
+    category: '-',
     author: 'Mosh',
+    tags: null,
     isPublished: true,
     price: 15
   });
@@ -81,7 +82,11 @@ async function createCourse(){
     // result has the document that was added to the database
     console.log(result);
   }catch(ex){
-    console.log(ex.message);
+    // We have a property for each invalid property in the object: ex.errors
+    // ex.errors has tags and category, we can iterate over them
+    for(field in ex.errors){
+      console.log(ex.errors[field].message);
+    }
   }
 }
 
