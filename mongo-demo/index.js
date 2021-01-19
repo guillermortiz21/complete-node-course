@@ -55,7 +55,7 @@ async function createCourse(){
 //createCourse();
 
 // Lets query courses from the db
-async function getCourses(){
+async function getCourses(){ 
   // You can get all the courses with:
   const courses = await Course.find();
   console.log(courses);
@@ -109,15 +109,42 @@ async function getCourses(){
   const pageNumber = 2;
   const pageSize = 10;
   // In the endpoint this would be like /api/courses?pageNumber=2&pageSize=10
-  const countingCourses = await Course
+  const countingCourses2 = await Course
     .find({author: 'Mosh',isPublished: true})
     .skip((pageNumber - 1) * pageSize) // Skip a certain number of Documents.
     .limit(pageSize)
-  console.log(countingCourses);
-
-
+  console.log(countingCourses2);
 }
 
-getCourses();
+//getCourses();
 
+// Lets update a course!
 
+//const Course = mongoose.model('Course', courseSchema);
+
+async function updateCourse(id){
+  /*
+  Query first approach:
+    1. Find by id
+    2. modify properties
+    3. save
+
+  Update first approach:
+    1. Update directly
+    2. get the updated document.
+  */
+
+  // Query first approach
+  console.log(Course);
+  const course = await Course.findById(id)
+  // Check if course exists
+  if(!course) return;
+
+  course.isPublished = true,
+  course.author = 'Another author'
+
+  const result = await course.save();
+  console.log(result);
+}
+
+updateCourse('600616739c21be0d48a2c884');
