@@ -11,11 +11,26 @@ mongoose.connect('mongodb://localhost:27017/playground',
 
 // This schema will define the shape of the course documents inside mongo db
 const courseSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String, 
+    required: true,
+    minlength: 5,
+    maxlength: 255,
+  },
+  category: {
+    type: String,
+    enum: ['web', 'mobile', 'network']
+  },
   author: String,
   tags: [String],
   date: {type: Date, default: Date.now},
-  isPublished: Boolean
+  isPublished: Boolean,
+  price: {
+    type: Number,
+    required: function(){return this.isPublished;},
+    min: 10,
+    max: 200
+  }
 });
 
 /*
@@ -40,19 +55,22 @@ async function createCourse(){
   // The param is the initializer
   const course = new Course({
     name: 'Angular Course',
+    category: '-',
     author: 'Mosh',
     tags: ['angular', 'frontend'],
-    isPublished: true
+    isPublished: true,
+    price: 15
   });
   
   // Now we can save this to the database.
-  
-  const result = await course.save();
-  // result has the document that was added to the database
-  console.log(result);
+  try{
+    const result = await course.save();
+    // result has the document that was added to the database
+    console.log(result);
+  }catch(ex){
+    console.log(ex.message);
+  }
 }
-
-//createCourse();
 
 // Lets query courses from the db
 async function getCourses(){ 
@@ -116,12 +134,7 @@ async function getCourses(){
   console.log(countingCourses2);
 }
 
-//getCourses();
-
 // Lets update a course!
-
-//const Course = mongoose.model('Course', courseSchema);
-
 async function updateCourse(id){
   /*
   Query first approach:
@@ -155,12 +168,10 @@ async function updateCourse(id){
   console.log(course);
 }
 
-//updateCourse('600616739c21be0d48a2c884');
-
 // Remove document!
 async function removeCourse(id){
   const course = await Course.findByIdAndRemove(id);
   console.log(course);
 }
 
-removeCourse('600616739c21be0d48a2c884')
+createCourse();
