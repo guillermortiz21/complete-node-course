@@ -155,4 +155,12 @@ async function updateCourse(id){
   console.log(course);
 }
 
-updateCourse('600616739c21be0d48a2c884');
+//updateCourse('600616739c21be0d48a2c884');
+
+// Remove document!
+async function removeCourse(id){
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+}
+
+removeCourse('600616739c21be0d48a2c884')
