@@ -19,18 +19,32 @@ const courseSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['web', 'mobile', 'network']
+    enum: ['web', 'mobile', 'network'],
   },
   author: String,
-  tags: [String],
+  tags:{
+    type: Array,
+    validate: {
+      validator: function(v){
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const result = v && v.length > 0;
+            resolve(result);
+          }, 4000)
+        });
+        // Simulate async work
+      },
+      message: 'Course must have at least one tag.',
+    },
+  },
   date: {type: Date, default: Date.now},
   isPublished: Boolean,
   price: {
     type: Number,
     required: function(){return this.isPublished;},
     min: 10,
-    max: 200
-  }
+    max: 200,
+  },
 });
 
 /*
@@ -55,9 +69,8 @@ async function createCourse(){
   // The param is the initializer
   const course = new Course({
     name: 'Angular Course',
-    category: '-',
+    category: 'web',
     author: 'Mosh',
-    tags: ['angular', 'frontend'],
     isPublished: true,
     price: 15
   });
