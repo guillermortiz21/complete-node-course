@@ -135,16 +135,24 @@ async function updateCourse(id){
   */
 
   // Query first approach
-  console.log(Course);
-  const course = await Course.findById(id)
-  // Check if course exists
-  if(!course) return;
+  // const course = await Course.findById(id)
+  // // Check if course exists
+  // if(!course) return;
 
-  course.isPublished = true,
-  course.author = 'Another author'
+  // course.isPublished = true,
+  // course.author = 'Another author'
 
-  const result = await course.save();
-  console.log(result);
+  // const result = await course.save();
+  // console.log(result);
+
+  // Update first approach
+  const course = await Course.findByIdAndUpdate(id, {
+    $set: {
+      author: 'Mosh 4',
+      isPublished: true
+    }
+  }, {new: true}); // New true to set course to the updated document, not the original one
+  console.log(course);
 }
 
 updateCourse('600616739c21be0d48a2c884');
