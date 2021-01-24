@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 const {genreSchema} = require('./genre');
 
-const Movie = mongoose.model('Movie', new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
   title: {type: String, minlength: 3, maxLength: 255, required: true, trim: true},
   genre: {type: genreSchema, required: true},
   numberInStock:{type: Number, min: 0, max:255, required: true, default: 0},
   dailyRentalRate:{type: Number, min:0, max:255, required: true, default: 0}
-}));
+})
+
+const Movie = mongoose.model('Movie', movieSchema);
 
 const validate = function(movie){
   const schema = Joi.object({
@@ -19,5 +21,6 @@ const validate = function(movie){
   return schema.validate(movie);
 }
 
+module.exports.movieSchema = movieSchema;
 module.exports.Movie = Movie;
 module.exports.validate = validate;
