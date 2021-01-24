@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
   if(movie.numberInStock === 0)
     return res.status(400).send('Movie not in stock');
 
-  let rental = new Rental({
+  const rental = new Rental({
     customer:{
       _id: customer._id,
       name: customer.name,
@@ -50,9 +50,6 @@ router.post('/', async (req, res) => {
         $inc: {numberInStock: -1}
       })
       .run();
-    //rental = await rental.save();
-    //movie.movieInStock--;
-    //movie.save();
     res.send(rental);
   }catch(err){
     res.status(500).send('Something failed');
