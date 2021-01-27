@@ -1,4 +1,5 @@
 const {Customer, validate} = require('../models/customer');
+const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/:id', async (req, res) => {
   res.send(customer);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const {error} = validate(req.body);
   if(error) return res.status(400).send(`Error creating a customer: ${error.details[0].message}`);
   
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const {error} = validate(req.body);
   if(error) return res.status(400).send(`Error updating a customer: ${error.details[0].message}`);
   try{
@@ -51,7 +52,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try{
     const customer = await Customer.findByIdAndRemove(req.params.id, {useFindAndModify:false});
     if(!customer) return res.status(404).send(`Customer with id ${req.params.id} was not found`);

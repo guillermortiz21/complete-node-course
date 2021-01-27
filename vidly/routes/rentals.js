@@ -1,6 +1,7 @@
 const {Rental, validate} = require('../models/rental');
 const {Customer, customerSchema} = require('../models/customer');
 const {Movie} = require('../models/movie');
+const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 const Fawn = require('fawn');
 const express = require('express');
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
   res.send(rentals);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const {error} = validate(req.body);
   if(error) return res.status(400).send(`Error creating a movie: ${error.details[0].message}`);
 
