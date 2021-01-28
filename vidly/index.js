@@ -1,6 +1,6 @@
+require('express-async-errors');
 const config = require('config');
 const error = require('./middleware/error');
-require('express-async-errors');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose');
