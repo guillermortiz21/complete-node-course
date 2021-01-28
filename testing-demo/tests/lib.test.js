@@ -21,3 +21,11 @@ describe('absolute', () =>{
   });
 })
 
+describe('greet', () => {
+  it('should return the greeting message', () => {
+    const result = lib.greet('Guillermo');
+    // Test not too specific, as long as we have Guillermo in the
+    // message, it is okay.
+    expect(result).toMatch(/Guillermo/);
+  });
+});
