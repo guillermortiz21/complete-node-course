@@ -1,4 +1,6 @@
 const config = require('config');
+const error = require('./middleware/error');
+require('express-async-errors');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose');
@@ -34,6 +36,9 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+
+// Error middleware
+app.use(error);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Listening to port ${PORT}...`));
