@@ -2,8 +2,19 @@ require('express-async-errors');
 const winston = require('winston');
 require('winston-mongodb');
 
+// Lets log the error to winston
+// the error can be of one level:
+  // error
+  // warn
+  // info
+  // verbose
+  // debug
+  // silly
+
 // Here is all the code related to log data.
 module.exports = function(){
+  winston.remove(winston.transports.Console);
+  winston.add(winston.transports.Console, { colorize: true, prettyPrint: true});
   winston.add(winston.transports.File, {filename: 'logfile.log'});
   winston.add(winston.transports.MongoDB, {
     db: 'mongodb://localhost/vidly',

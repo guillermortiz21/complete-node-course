@@ -1,3 +1,5 @@
+const winston = require('winston');
+
 const express = require('express');
 const app = express()
 
@@ -13,8 +15,8 @@ require('./startup/db')();
 // Start routes and middleware
 require('./startup/routes')(app);
 
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
+// Start joi validations
+require('./startup/validation');
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Listening to port ${PORT}...`));
+app.listen(PORT, () => winston.info(`Listening to port ${PORT}...`));
