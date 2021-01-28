@@ -21,6 +21,22 @@ if(!config.get('jwtPrivateKey')){
   process.exit(1);
 };
 
+// Get sync exceptions that were not caught
+process.on('uncaughtException', (ex) => {
+  console.log('UNCAUGHT EXCEPTION');
+  winston.error(ex.message, ex);
+  // The best practice is to termine the process and restart it.
+  process.exit(1);
+});
+
+// Get async exceptions that were not caught
+process.on('unhandledRejection', (ex) => {
+  console.log('UNHANDLED EXCEPTION');
+  winston.error(ex.message, ex);
+  // The best practice is to termine the process and restart it.
+  process.exit(1);
+});
+
 winston.add(winston.transports.File, {filename: 'logfile.log'});
 winston.add(winston.transports.MongoDB, {
   db: 'mongodb://localhost/vidly',
