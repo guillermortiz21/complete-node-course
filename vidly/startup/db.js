@@ -9,4 +9,7 @@ module.exports = function(){
     {useNewUrlParser:true, useUnifiedTopology:true}
   )
   .then(() => winston.info('Connected to mongodb'))
+  .catch((err) => {
+    throw new Error(err);
+  })
 }

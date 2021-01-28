@@ -11,11 +11,12 @@ module.exports = function(){
   });
 
   // Get sync exceptions that were not caught
-  process.on('uncaughtException', (ex) => {
+  process.on('uncaughtException', async (ex) => {
     console.log('UNCAUGHT EXCEPTION');
     winston.error(ex.message, ex);
     // The best practice is to termine the process and restart it.
-    process.exit(1);
+    // Wait for winston to finish logging
+    setTimeout(() => {process.exit(1);}, 1000)
   });
 
   // Get async exceptions that were not caught
@@ -23,6 +24,7 @@ module.exports = function(){
     console.log('UNHANDLED EXCEPTION');
     winston.error(ex.message, ex);
     // The best practice is to termine the process and restart it.
-    process.exit(1);
+    // Wait for winston to finish logging
+    setTimeout(() => {process.exit(1);}, 1000);
   });
 }

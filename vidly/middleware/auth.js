@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
 
 module.exports = function (req, res, next){
   const token = req.header('x-auth-token');
@@ -7,7 +6,7 @@ module.exports = function (req, res, next){
 
   // Verify it is a valid token
   try{
-    const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+    const decoded = jwt.verify(token, process.env.jwtPrivateKey);
     // set the user object in request.
     // This has the decoded payload of the jwt
     req.user = decoded;
