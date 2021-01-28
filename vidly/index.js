@@ -6,19 +6,26 @@ const config = require('config');
 const express = require('express');
 const app = express()
 
+// Start database
+require('./startup/db')();
+
 // Start routes and middleware
 require('./startup/routes')(app);
 
 const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi)
-const mongoose = require('mongoose');
+Joi.objectId = require('joi-objectid')(Joi);
 
-;
 
 if(!config.get('jwtPrivateKey')){
   console.log('FATAL ERROR: jwtPrivateKey is not defined');
   process.exit(1);
 };
+
+winston.add(winston.transports.File, {filename: 'logfile.log'});
+winston.add(winston.transports.MongoDB, {
+  db: 'mongodb://localhost/vidly',
+  level: 'error' //log only error messages to db
+});
 
 // Get sync exceptions that were not caught
 process.on('uncaughtException', (ex) => {
@@ -35,20 +42,6 @@ process.on('unhandledRejection', (ex) => {
   // The best practice is to termine the process and restart it.
   process.exit(1);
 });
-
-winston.add(winston.transports.File, {filename: 'logfile.log'});
-winston.add(winston.transports.MongoDB, {
-  db: 'mongodb://localhost/vidly',
-  level: 'error' //log only error messages to db
-});
-
-// playground is the name of the db
-// mongo will create it automatically
-mongoose.connect('mongodb://localhost:27017/vidly', 
-  {useNewUrlParser:true, useUnifiedTopology:true}
-)
-  .then(() => console.log('Connected to mongodb'))
-  .catch((err) => console.log(`Could not connect to mongodb...: ${err.message}`));
 
 
 const PORT = process.env.PORT || 3000;
