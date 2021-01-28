@@ -1,4 +1,4 @@
-const winston = require('../utils/winston');
+const winston = require('winston');
 
 module.exports = function(err, req, res, next){
   // Lets log the error to winston

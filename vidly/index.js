@@ -1,4 +1,6 @@
 require('express-async-errors');
+const winston = require('winston');
+require('winston-mongodb');
 const config = require('config');
 const error = require('./middleware/error');
 const Joi = require('joi');
@@ -18,6 +20,12 @@ if(!config.get('jwtPrivateKey')){
   console.log('FATAL ERROR: jwtPrivateKey is not defined');
   process.exit(1);
 };
+
+winston.add(winston.transports.File, {filename: 'logfile.log'});
+winston.add(winston.transports.MongoDB, {
+  db: 'mongodb://localhost/vidly',
+  level: 'error' //log only error messages to db
+});
 
 // playground is the name of the db
 // mongo will create it automatically
