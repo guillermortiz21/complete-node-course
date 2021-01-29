@@ -1,4 +1,5 @@
 const lib = require('../lib');
+const db = require('../db');
 
 // group related test
 describe('absolute', () =>{
@@ -83,4 +84,18 @@ describe('registerUser', () =>{
     expect(result).toHaveProperty('username', 'Guillermo');
     expect(result.id).toBeGreaterThan(0);
   });
+});
+
+describe('applyDiscount', () => {
+  it('should apply 10% discount if customer has more than 10 points', () => {
+    // Set the db
+    db.getCustomerSync = function(customerId){
+      console.log('Fake reading customer...');
+      return {id: customerId, points: 20};
+    }
+
+    const order = {customerId: 1, totalPrice: 10};
+    lib.applyDiscount(order);
+    expect(order.totalPrice).toBe(9);
+  })
 });
