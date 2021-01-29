@@ -50,8 +50,22 @@ describe('getCurrencies', () => {
     //expect(result).toContain('USD');
     //expect(result).toContain('AUD');
     //expect(result).toContain('EUR');
-    
+
     // Instead of three assertions, just one
     expect(result).toEqual(expect.arrayContaining(['EUR', 'USD', 'AUD']))
   });
 })
+
+describe('getProduct', () => {
+  it('should return the product with the given id', () => {
+    const result = lib.getProduct(1);
+    // toBe compares the location in memory, this test will fail
+    //expect(result).toBe({id: 1, price: 10});
+    // we can use toEqual to check for object equality
+    //expect(result).toEqual({id: 1, price: 10});
+    // With toMatchObject it checks if it has at least these properties.
+    //expect(result).toMatchObject({id: 1, price: 10});
+    // I just care that it has the id property with a 1 as number
+    expect(result).toHaveProperty('id', 1);
+  });
+});
