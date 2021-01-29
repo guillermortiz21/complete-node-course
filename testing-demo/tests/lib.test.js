@@ -90,31 +90,31 @@ describe('registerUser', () =>{
 describe('applyDiscount', () => {
   it('should apply 10% discount if customer has more than 10 points', () => {
     // Set the db
-    db.getCustomerSync = function(customerId){
-      console.log('Fake reading customer...');
-      return {id: customerId, points: 20};
-    }
+    db.getCustomerSync = jest.fn().mockReturnValue({id: 1, points: 20});
 
     const order = {customerId: 1, totalPrice: 10};
     lib.applyDiscount(order);
+    
     expect(order.totalPrice).toBe(9);
   })
 });
 
 describe('notifyCustomer', () => {
   it('should send an email to the customer', () => {
-    db.getCustomerSync = function(customerId){
-      console.log('Fake reading customer...');
-      return {email: 'a'};
-    }
+    // Jest mock functions!!
+    //const mockFunction = jest.fn();
+    //mockFunction.mockReturnValue(1);
+    //mockFunction.mockResolvedValue(1);
+    //mockFunction.mockRejectedValue(new Error('...'));
 
-    let mailSent = false;
-    mail.send = function(email, message){
-      mailSent = true;
-    }
+    db.getCustomerSync = jest.fn().mockReturnValue({email: 'a'});
+    mail.send = jest.fn();
 
-    const order = {customerId: 1};
-    lib.notifyCustomer(order)
-    expect(mailSent).toBe(true);
+    lib.notifyCustomer({customerId: 1});
+
+    expect(mail.send).toHaveBeenCalled();
+    // Check the args that were passed to email sent
+    expect(mail.send.mock.calls[0][0]).toBe('a');
+    expect(mail.send.mock.calls[0][1]).toMatch(/order/);
   });
 });
