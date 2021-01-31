@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon bin/dev",
-    "test": "jest --watchAll --verbose --coverage"
+    "test": "jest --testEnvironment=node --watchAll --verbose --coverage --maxWorkers=1"
   },
   "keywords": [],
   "author": "",

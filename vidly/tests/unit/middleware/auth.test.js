@@ -3,16 +3,6 @@ const auth = require('../../../middleware/auth');
 const {User} = require('../../../models/user');
 
 describe('auth middleware', () => {
-  // let server;
-
-  // beforeEach(() => {
-  //   server = require('../../../index');
-  // });
-
-  // afterEach(async () => {
-  //   server.close();
-  // });
-
   it('should populate req.user with the payload of a valid JWT', () => {
     const user = {
       _id: mongoose.Types.ObjectId().toHexString(),
