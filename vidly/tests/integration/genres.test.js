@@ -1,6 +1,7 @@
 const request = require('supertest');
 const {Genre} = require('../../models/genre');
 const mongoose = require('mongoose');
+const {User} = require('../../models/user');
 
 let server;
 
@@ -51,6 +52,24 @@ describe('/api/genres', () => {
     it('should return a 404 error if the genre does not exist', async () =>{
       const res = await request(server).get('/api/genres/1');
       expect(res.status).toBe(404);
+    });
+  });
+
+  describe('POST /', () => {
+    it('should return 401 if client is not logged in', async () =>{
+      const res = await request(server).post('/api/genres').send({name: 'genre1'});
+      expect(res.status).toBe(401);
+    });
+
+    it('should return 400 if genre is less than 3 characters', async () =>{
+      // First we need to log in!
+      const token = new User().generateAuthToken();
+
+      const res = await request(server)
+        .post('/api/genres')
+        .set('x-auth-token', token) // set the token
+        .send({name: 'aa'}); // Less than 3 chars
+      expect(res.status).toBe(400);
     });
   });
 });

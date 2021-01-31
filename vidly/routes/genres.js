@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   const {error} = validate(req.body);
-  //if(error) return res.status(400).send(`Error creating a genre: ${error.details[0].message}`);
+  if(error) return res.status(400).send(`Error creating a genre: ${error.details[0].message}`);
   
   const genre = new Genre({name: req.body.name});
 
