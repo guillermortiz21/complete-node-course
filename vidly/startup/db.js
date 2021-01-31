@@ -8,7 +8,7 @@ module.exports = function(){
   mongoose.connect(process.env.DB, 
     {useNewUrlParser:true, useUnifiedTopology:true}
   )
-  .then(() => winston.info('Connected to mongodb'))
+  .then(() => winston.info(`Connected to ${process.env.DB}`))
   .catch((err) => {
     throw new Error(err);
   })

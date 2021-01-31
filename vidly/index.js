@@ -19,4 +19,7 @@ require('./startup/routes')(app);
 require('./startup/validation')();
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => winston.info(`Listening to port ${PORT}...`));
+const server = app.listen(PORT, () => winston.info(`Listening to port ${PORT}...`));
+
+// Export the server to make integration tests
+module.exports = server;
