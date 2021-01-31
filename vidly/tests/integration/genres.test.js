@@ -56,46 +56,49 @@ describe('/api/genres', () => {
   });
 
   describe('POST /', () => {
+
+    // Define the success path and then, in each test, change one parameter
+    // that aligns with the name of the test.
+
+    let token;
+    let name;
+
+    const exec = async () => {
+      return res = await request(server)
+        .post('/api/genres')
+        .set('x-auth-token', token) // set the token
+        .send({name}); // Less than 3 chars
+    }
+
+    beforeEach(() => {
+      // Simulate a log in in each test
+      token = new User().generateAuthToken();
+      name = 'genre1'
+    });
+
     it('should return 401 if client is not logged in', async () =>{
-      const res = await request(server).post('/api/genres').send({name: 'genre1'});
+      token = ''; // Client is not logged in
+      const res = await exec();
       expect(res.status).toBe(401);
     });
 
     it('should return 400 if genre is less than 3 characters', async () =>{
       // First we need to log in!
-      const token = new User().generateAuthToken();
-
-      const res = await request(server)
-        .post('/api/genres')
-        .set('x-auth-token', token) // set the token
-        .send({name: 'aa'}); // Less than 3 chars
+      name = 'aa'; // genre less than 3 characters
+      const res = await exec();
       expect(res.status).toBe(400);
     });
 
     it('should save the genre if it is valid', async () =>{
       // First we need to log in!
-      const token = new User().generateAuthToken();
-
-      const res = await request(server)
-        .post('/api/genres')
-        .set('x-auth-token', token) // set the token
-        .send({name: 'genre1'}); // Less than 3 chars
-
+      const res = await exec();
       const genre = await Genre.find({name: 'genre1'});
-
       expect(res.status).toBe(200);
       expect(genre).not.toBe(null);
     });
 
     it('should return the genre if it is valid', async () =>{
-      // First we need to log in!
-      const token = new User().generateAuthToken();
-
-      const res = await request(server)
-        .post('/api/genres')
-        .set('x-auth-token', token) // set the token
-        .send({name: 'genre1'}); // Less than 3 chars
-
+      const res = await exec();
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('name', 'genre1');
