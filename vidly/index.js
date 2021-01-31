@@ -16,7 +16,7 @@ require('./startup/db')();
 require('./startup/routes')(app);
 
 // Start joi validations
-require('./startup/validation');
+require('./startup/validation')();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => winston.info(`Listening to port ${PORT}...`));

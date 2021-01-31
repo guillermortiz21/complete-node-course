@@ -5,7 +5,7 @@ const winston = require('winston');
 module.exports = function(){
   // playground is the name of the db
   // mongo will create it automatically
-  mongoose.connect('mongodb://localhost:27017/vidly', 
+  mongoose.connect(process.env.DB, 
     {useNewUrlParser:true, useUnifiedTopology:true}
   )
   .then(() => winston.info('Connected to mongodb'))
