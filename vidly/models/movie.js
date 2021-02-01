@@ -21,6 +21,13 @@ const validate = function(movie){
   return schema.validate(movie);
 }
 
+const addOneToStock = async function(movieId){
+  const movie = await Movie.findOne({_id: movieId});
+  movie.numberInStock = movie.numberInStock + 1;
+  await movie.save();
+}
+
 module.exports.movieSchema = movieSchema;
 module.exports.Movie = Movie;
 module.exports.validate = validate;
+module.exports.addMovieToStock = addOneToStock;
