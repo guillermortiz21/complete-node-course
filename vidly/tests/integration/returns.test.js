@@ -91,18 +91,6 @@ describe('/api/returns', () => {
       expect(res.status).toBe(400);
     });
     
-    it('should return 404 if customerId is not a valid id', async () => {
-      payload.customerId = 'a';
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
-    it('should return 404 if movieId is not a valid id', async () => {
-      payload.movieId = 'a';
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-    
     it('should return 404 if no retal found for this customer/movie', async () => {
       await Rental.deleteMany({});
       const res = await exec();

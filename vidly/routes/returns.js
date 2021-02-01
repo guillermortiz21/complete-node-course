@@ -4,21 +4,11 @@ const router = express.Router();
 const {Rental} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const moment = require('moment');
-
-const mongoose = require('mongoose');
+const validate = require('../middleware/validate')
 const Joi = require('joi');
 
-router.post('/', auth, async(req, res) => {
-  if(!req.body.customerId) 
-    return res.status(400).send('customerId was provided');
-  if(!req.body.movieId) 
-    return res.status(400).send('movieId was provided');
-  
-  if(!mongoose.Types.ObjectId.isValid(req.body.customerId))
-    return res.status(404).send('Invalid customer Id');
-  if(!mongoose.Types.ObjectId.isValid(req.body.movieId))
-    return res.status(404).send('Invalid movie Id');
 
+router.post('/', [auth, validate(returnsValidator)], async(req, res) => {
   const rental = await Rental.findOne({
     'customer._id': req.body.customerId,
     'movie._id': req.body.movieId
@@ -41,5 +31,13 @@ router.post('/', auth, async(req, res) => {
 
   res.send(rental);
 });
+
+function returnsValidator(returnObject){
+  const schema = Joi.object({
+    customerId: Joi.objectId().required(),
+    movieId: Joi.objectId().required()
+  });
+  return schema.validate(returnObject);
+}
 
 module.exports = router;
