@@ -18,6 +18,9 @@ require('./startup/routes')(app);
 // Start joi validations
 require('./startup/validation')();
 
+// Production requirements
+require('./startup/prod')(app);
+
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => winston.info(`Listening to port ${PORT}...`));
 
